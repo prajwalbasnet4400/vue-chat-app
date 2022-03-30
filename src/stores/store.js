@@ -41,7 +41,11 @@ function create_chat(data) {
     }
 }
 function get_messages(data) {
-    state.messages = data.data
+    if (data.from_range != null){
+        state.messages = [...data.data, ...state.messages];
+    }else{
+        state.messages = data.data
+    }
 }
 function send_message(data) {
     state.messages = [...state.messages, data];
@@ -85,8 +89,8 @@ const sendChatMessage = (msg) => {
     sendMessage(data)
 }
 
-const getMessages = () => {
-    let data = { 'command': 'get_messages', 'room': state.activeRoom }
+const getMessages = (from_date) => {
+    let data = { 'command': 'get_messages', 'room': state.activeRoom,'from_range':from_date }
     sendMessage(data)
 }
 

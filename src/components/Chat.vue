@@ -25,10 +25,15 @@
   </div>
   <div v-else>
     <div class="w-100 h-100 text-center">
-      <p class="text-muted"><i>
-        No messages <br>
-        <span>All messages are stored in the server, Please do not share any credentials or contact information</span>
-        </i></p>
+      <p class="text-muted">
+        <i>
+          No messages <br />
+          <span
+            >All messages are stored in the server, Please do not share any
+            credentials or contact information</span
+          >
+        </i>
+      </p>
     </div>
   </div>
 </template>
@@ -41,16 +46,17 @@ export default {
   name: "Chat",
   components: { Message },
   inject: ["store"],
-  data() {
-    return {
-      chatInput: "",
-    };
-  },
+  data() {return {chatInput: "",};},
   methods: {
-    sendMessage:function(){
+    handleScroll:function(event){
+      if (event.target.scrollTop==0){
+        this.store.commands.getMessages(this.store.state.messages[0].date_sent)
+      }
+    },
+    sendMessage: function () {
       this.store.commands.sendChatMessage(this.chatInput);
       this.chatInput = "";
-    }
+    },
   },
 };
 </script>
@@ -64,6 +70,18 @@ export default {
   overflow: hidden scroll;
   scrollbar-width: thin;
   height: 100%;
+}
+.chat-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
 }
 
 .chat-input input {
